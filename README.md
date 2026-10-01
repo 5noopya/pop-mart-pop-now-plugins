@@ -75,15 +75,6 @@ README.md
 LICENSE
 ```
 
-仅保留当前版本源码；没有历史版本或更新补丁。Release 的两个 ZIP 包含完整 manifest、技能、计算脚本、表单及自定义图标。
-
-Only current source is included, without historical versions or update patches. The two release ZIPs contain complete manifests, skills, solver scripts, forms, and the custom icon.
-
-## 参考 / References
-
-- [OpenAI plugin packaging and marketplaces](https://developers.openai.com/plugins/build/plugins)
-- [GitHub workspace import and desktop-only restrictions](https://learn.chatgpt.com/docs/enterprise/plugin-management)
-
 ## 许可 / License
 
 [MIT](LICENSE). 此项目为独立工具，与 POP MART 无官方关联。 / This is an independent tool, not affiliated with POP MART.
