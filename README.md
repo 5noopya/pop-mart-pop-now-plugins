@@ -4,8 +4,6 @@
 
 Calculate box probabilities from screenshots and find the best blind-box selection.
 
-开发者 / Developer: **5noopya**
-
 | 版本 / Variant | 当前版本 / Version | 使用方式 / Interaction |
 | --- | --- | --- |
 | Chat版 / Chat | 0.2.13 | 无 MCP 依赖；通过对话收集偏好 / No MCP dependency; conversational preferences |
