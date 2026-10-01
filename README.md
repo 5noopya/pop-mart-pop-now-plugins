@@ -8,7 +8,7 @@ Calculate box probabilities from screenshots and find the best blind-box selecti
 
 | 版本 / Variant | 当前版本 / Version | 使用方式 / Interaction |
 | --- | --- | --- |
-| Chat版 / Chat | 0.2.13 | 无远程 MCP 依赖；通过对话收集偏好，宿主支持时使用本地交互表单 / No remote MCP dependency; conversational preferences and local forms where supported |
+| Chat版 / Chat | 0.2.13 | 无 MCP 依赖；通过对话收集偏好 / No MCP dependency; conversational preferences |
 | Codex版 / Codex | 0.3.5 | 远程 MCP 选择表单；内置本地计算脚本作为备用 / Remote MCP preference form with a bundled local solver fallback |
 
 ## 使用说明 / How to use
@@ -31,7 +31,7 @@ Results default to Chinese with a short inline notice. Reply English to switch s
 
 ## 安装 / Installation
 
-### Codex 桌面端：Add marketplace（无需 CLI）
+### Codex 桌面端：Add marketplace
 
 1. 打开 **Plugins → Add marketplace**。
 2. 输入本仓库链接：
