@@ -1,0 +1,32 @@
+{
+  "name": "5noopya-pop-mart-pop-now",
+  "interface": {
+    "displayName": "5noopya · POP MART POP NOW"
+  },
+  "plugins": [
+    {
+      "name": "pop-mart-blind-box-v027",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pop-mart-blind-box-v027"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "pop-mart-blind-box",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pop-mart-blind-box"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pop-mart-blind-box-v027",
+  "version": "0.2.13",
+  "description": "截图算概率，给出最佳盲盒选择",
+  "author": {
+    "name": "5noopya"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "泡泡玛特盲盒概率计算（Chat版）",
+        "shortDescription": "截图算概率，给出最佳盲盒选择",
+        "longDescription": "Popmart官网的POP NOW功能，线上抽盲盒，把一个完整组合的每个盲盒都Shake for hints得到排除选项，点击Box status, 截图并发给plugin. 若截图中没有涵盖所有盲盒，需要再截图页面下方的所有盲盒名称列表。plugin会自动计算每个盲盒编号对应每种款式的概率，并询问喜欢的款式，不想要的款式，和购买数量，给出最佳组合。\n\nUse POP NOW on the official POP MART website to open blind boxes online. For every box in a complete set, use \"Shake for hints\" to reveal excluded styles. Click \"Box status\", take a screenshot, and send it to the plugin. If the screenshot does not cover all the blind boxes, also send a screenshot of the full list of blind-box style names at the bottom of the page. The plugin automatically calculates the probability of each style for every box number, then asks which styles you like, which styles you do not want, and how many boxes you want to buy, and recommends the best combination.",
+        "developerName": "5noopya",
+        "category": "Productivity",
+        "capabilities": [
+          "Interactive"
+        ],
+        "logo": "./assets/blind-box-custom-icon.png",
+        "composerIcon": "./assets/blind-box-custom-icon.png",
+        "defaultPrompt": [
+          "我上传了这套盲盒截图，请先算每盒每款的概率，再问我想要哪个、买几个。",
+          "让我点选想要的款式、不要的款式和购买数量，再推荐最佳编号组合。",
+          "让我点选不想要的款式，按抽到不要款的概率从低到高排列编号，并列出各编号的款式概率。"
+        ]
+      }
+    }
+  }
+}

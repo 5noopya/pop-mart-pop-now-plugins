@@ -1,0 +1,137 @@
+<div id="blind-box-preference-form">
+  <h3 data-heading>选择款式和数量</h3>
+  <div style="display:grid;gap:16px">
+    <section aria-label="想要的款式" data-wanted-section>
+      <div>想要（可多选）</div>
+      <div class="viz-row" data-wanted></div>
+    </section>
+    <section aria-label="不要的款式">
+      <div>不要（可多选，留空表示没有）</div>
+      <div class="viz-row" data-avoid></div>
+    </section>
+    <section aria-label="购买数量" data-quantity-section>
+      <div>买几盒</div>
+      <div class="viz-row" data-quantity></div>
+    </section>
+    <div aria-live="polite" data-summary>尚未选择想要的款式</div>
+    <div role="alert" class="text-destructive" data-error></div>
+    <div class="viz-row">
+      <button type="button" class="btn btn-primary" data-submit disabled>发送选择并计算</button>
+    </div>
+    <textarea class="form-control" data-fallback aria-label="可复制的选择结果" readonly hidden></textarea>
+  </div>
+  <script type="application/json" data-config>__CASE_CONFIG_JSON__</script>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('blind-box-preference-form');
+  const config = JSON.parse(root.querySelector('[data-config]').textContent);
+  const items = [...new Set(config.items)];
+  const maxCount = config.availableBoxIds.length;
+  const wantedArea = root.querySelector('[data-wanted]');
+  const avoidArea = root.querySelector('[data-avoid]');
+  const quantityArea = root.querySelector('[data-quantity]');
+  const summary = root.querySelector('[data-summary]');
+  const error = root.querySelector('[data-error]');
+  const submit = root.querySelector('[data-submit]');
+  const fallback = root.querySelector('[data-fallback]');
+  let wanted = new Set(), avoid = new Set(), quantity = null;
+  let sending = false;
+  const avoidOnly = config.workflowMode === 'avoid-filter';
+  if (avoidOnly) {
+    root.querySelector('[data-wanted-section]').hidden = true;
+    root.querySelector('[data-quantity-section]').hidden = true;
+    root.querySelector('[data-heading]').textContent = '选择不想要的款式';
+    submit.textContent = '按风险排序并查看款式概率';
+  }
+  if (config.demo) {
+    root.querySelector('[data-heading]').textContent = '按钮显示测试（示例款式）';
+    submit.textContent = '确认按钮可见';
+  }
+  if (!config.demo && config.workflowMode === 'preferences-only') submit.textContent = '确认选择';
+  function adopt(state) {
+    if (!state || state.caseId !== config.caseId) return;
+    wanted = new Set(avoidOnly ? [] : (state.wanted || []).filter(x => items.includes(x)));
+    avoid = new Set((state.avoid || []).filter(x => items.includes(x) && !wanted.has(x)));
+    quantity = Number.isInteger(state.buyCount) && state.buyCount >= 1 && state.buyCount <= maxCount ? state.buyCount : null;
+  }
+  adopt({...config.initial, caseId: config.caseId});
+  adopt(window.openai?.widgetState?.modelContent);
+  function snapshot() {
+    return {caseId: config.caseId, wanted: [...wanted], avoid: [...avoid], buyCount: quantity, workflowMode: config.workflowMode || 'default', demo: !!config.demo};
+  }
+  function persist() {
+    if (typeof window.openai?.setWidgetState === 'function') {
+      Promise.resolve(window.openai.setWidgetState({modelContent: snapshot(), privateContent: null})).catch(() => {});
+    }
+  }
+  const buttons = [];
+  function makeButton(label, area, kind, value) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn';
+    button.textContent = label;
+    button.setAttribute('aria-pressed', 'false');
+    button.addEventListener('click', () => {
+      if (kind === 'quantity') quantity = value;
+      else if (kind === 'none') avoid.clear();
+      else {
+        const selected = kind === 'wanted' ? wanted : avoid;
+        if (selected.has(value)) selected.delete(value);
+        else selected.add(value);
+      }
+      error.textContent = '';
+      render();
+      persist();
+    });
+    area.appendChild(button);
+    buttons.push({button, kind, value});
+  }
+  makeButton('没有', avoidArea, 'none', null);
+  for (const item of items) {
+    makeButton(item, wantedArea, 'wanted', item);
+    makeButton(item, avoidArea, 'avoid', item);
+  }
+  for (let count = 1; count <= maxCount; count++) makeButton(count + '盒', quantityArea, 'quantity', count);
+  function render() {
+    for (const {button, kind, value} of buttons) {
+      const selected = kind === 'none' ? avoid.size === 0 : kind === 'quantity' ? quantity === value : (kind === 'wanted' ? wanted : avoid).has(value);
+      button.setAttribute('aria-pressed', String(selected));
+      button.disabled = sending || (kind === 'wanted' && avoid.has(value)) || (kind === 'avoid' && wanted.has(value));
+    }
+    summary.textContent = '想要：' + ([...wanted].join('、') || '未选') + '；不要：' + ([...avoid].join('、') || '没有') + '；买：' + (quantity ? quantity + '盒' : '未选');
+    if (avoidOnly) summary.textContent = '不想要：' + ([...avoid].join('、') || '未选');
+    submit.disabled = sending || (avoidOnly ? avoid.size === 0 : wanted.size === 0 || quantity === null);
+  }
+  window.addEventListener('openai:set_globals', event => {
+    adopt(event.detail?.globals?.widgetState?.modelContent);
+    render();
+  });
+  submit.addEventListener('click', async () => {
+    if (sending || (avoidOnly ? !avoid.size : !wanted.size || !quantity)) return;
+    const data = snapshot();
+    const prompt = config.demo
+      ? '我已看到并点击盲盒插件的按钮。这是显示测试，不是实际盲盒案例，不要计算概率或购买推荐。测试选择：' + JSON.stringify(data)
+      : (avoidOnly ? '请按当前盲盒完整线索，计算抽到所选不要款的合计概率，只建议排除100%抽到不要款的编号，其余编号按风险从低到高排列，列出各编号所有款式概率。没有0%风险时明确说明没有保证安全的编号。不询问想要款式或购买数量，不推荐多盒组合。' : config.workflowMode === 'preferences-only' ? '仅记录我的盲盒款式与数量选择，不要计算概率或推荐编号。' : '请按当前已核实盲盒案例计算最佳购买组合。') + '选择数据：' + JSON.stringify(data) + '\n案例标识：' + config.caseId + '\n想要：' + [...wanted].join('、') + '\n不要：' + ([...avoid].join('、') || '没有') + '\n买：' + quantity + '\n若案例标识与当前案例不匹配，请先核实，不要复用旧截图。';
+    if (typeof window.openai?.sendFollowUpMessage !== 'function') {
+      fallback.hidden = false;
+      fallback.value = prompt;
+      error.textContent = '当前客户端不能直接提交，请复制下面的选择结果发到聊天。';
+      return;
+    }
+    sending = true;
+    render();
+    try {
+      await window.openai.sendFollowUpMessage({prompt, title: config.demo ? '确认按钮显示测试' : avoidOnly ? '提交不想要的款式' : config.workflowMode === 'preferences-only' ? '记录盲盒选择' : '提交盲盒购买偏好'});
+    } catch (err) {
+      error.textContent = '未能提交；可以再次点击，或复制下面的结果发到聊天。';
+      fallback.hidden = false;
+      fallback.value = prompt;
+    } finally {
+      sending = false;
+      render();
+    }
+  });
+  render();
+})();
+</script>
