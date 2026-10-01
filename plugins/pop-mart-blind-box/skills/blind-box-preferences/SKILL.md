@@ -17,7 +17,7 @@ A screenshot alone starts the complete workflow: read the probability skill, ver
 
 An explicit probabilities-only request skips this skill. An explicit preferences-only request uses verified complete styles and purchasable IDs without calculating probabilities; submission records choices only. Ordinary wanted-style or quantity statements do not restrict the default workflow. Supplemental screenshots retain the current scope; new independent cases restore default scope.
 
-An incomplete style list requires a matching same-series complete style-name screenshot before generating options. Merge the supplement into the current case. Preferences-only mode does not require all exclusions, but must verify the actual purchasable-box count. Ask only for missing relevant data.
+Use the picker's count rule: N displayed boxes and N distinct readable style names means a complete list, without a confirmation question. Only an actually incomplete style list requires a matching same-series complete style-name screenshot before generating options. Merge the supplement into the current case. Preferences-only mode does not require all exclusions, but must verify the actual purchasable-box count. Ask only for missing relevant data.
 
 ## Three genuine choice groups
 
@@ -27,27 +27,31 @@ An incomplete style list requires a matching same-series complete style-name scr
 
 Disable a wanted style in the unwanted group and vice versa. Unmentioned styles are neutral; do not ask for a neutral classification. Prefill only the current user's explicit choices using `initial`; never inherit another case's preferences. Let the user change prefilled choices before actively submitting. If all required preferences are already explicit and the user did not request editing them, proceed directly to optimization instead of repeating the form.
 
-## Remote MCP App form
+## Mandatory Codex inline buttons
 
-Prefer the connected service's actual `open_preferences` tool, which associates the result with a registered MCP App HTML resource. After the default probability output, call the tool rather than merely describing a form or returning Markdown/HTML attachments.
+The default Codex workflow must show real clickable choices immediately after the probability matrix in the same final response. The screenshot itself authorizes rendering the form. Do not ask whether the user wants buttons, stop after probabilities, or replace the choices with a text-input question. Do not depend on remote MCP authorization to display the choices.
 
-Arguments:
-- `case`: verified current JSON with complete items, all boxes and clues, actual available_box_ids, and any explicitly provided wanted/avoid/buy_count for prefill.
-- `case_id`: a unique case string recorded against the current screenshot. Supplemental data remains the same case; reopen with updated constraints when needed.
-- `workflow_mode`: exactly default, preferences-only or avoid-filter according to the current scope.
+1. Read the available visualize skill and follow its inline HTML rendering contract. Codex supports that conversation surface when the visualize skill is present; do not ask the user to confirm support.
+2. Save the verified current case JSON with complete `items`, original `boxes`/clues, actual `available_box_ids`, and only explicitly stated preference prefill.
+3. Run the bundled `scripts/render_form.py` with the case JSON and an absolute HTML output path in the current thread's explicitly writable visualization directory, or a durable authorized task output directory. Pass `--mode default`, `--mode preferences-only`, or `--mode avoid-filter` as appropriate.
+4. Record the generator's returned `caseId` against that exact case. Supplemental screenshots update that case; stale submissions must not be applied to a new case.
+5. Include the rendering reference on its own line after the probability matrix in the same final response, using the actual generated absolute path:
 
-Default and avoid-filter need a complete computable case. Preferences-only needs complete styles and available IDs without forcing a probability call. The form provides real single-select quantity, multi-select styles, wanted/unwanted conflict controls and a none button. Quantity is not chosen for the user; avoid-filter asks only for unwanted styles.
+```text
+visualize{"path":"<actual-absolute-output-path>/blind-box-preferences.html"}
+```
 
-On explicit submission, the interface calls `evaluate_selection`, displays results and uses standard `ui/message` to send caseId, choices and results to the chat. Validate case identity, actual names, conflicts, quantity and current scope. Returned UI content does not replace model verification. A demo is not a real submission. Summarize default recommendations and key probabilities, record preferences-only choices without calculation, or rank avoid-filter risks. Do not reopen the form or repeat questions. The user's latest scope overrides an older submission.
+Replace the placeholder with the actual file path. Do not return the marker as a code fence, Markdown download link or HTML attachment in the user response. Do not describe the form without rendering it. Keep the language-switch notice incidental after the useful output, never as a separate question.
 
-The service supports the distinct-regular-style whole-box model, up to 16 styles and at most 2000 combinations per cloud call. On limits, network failures or explicit calculation errors, retain choices and use the probability skill's exact bundled solver when available. Do not call an error a successful calculation or label an unfinished search optimal. Secret styles and additional rules require a separately verified model.
+The bundled form has single-select quantity buttons from 1 through the purchasable count, multi-select wanted and unwanted styles, a none option, conflict disabling, and an explicit submit button. Default quantity is unselected. `avoid-filter` hides wanted/quantity; `preferences-only` records choices without calculation. The user only clicks choices and submits. `window.openai.sendFollowUpMessage` submits the case-bound choices to the chat; persisted widget state alone does not count as submission.
 
-## Connection and local compatibility
+On active submission, validate case identity, actual style names, conflicts, quantity and scope, then use the bundled exact solver to optimize or rank risk. Do not ask the user to type the same choices, seek another calculation confirmation, or reopen the form after completion. A demo is not a real case.
 
-If tools are unavailable or authentication fails, explain that the service connection is needed and that a new conversation may be required after connecting. Do not claim updating a plugin package proves that its browser connection works. If buttons are missing, check whether open_preferences was called and whether connection/tool errors occurred; do not repeat an unverified display method.
+## Remote connection and rendering failures
 
-Bundled references/preference-form.html and scripts/render_form.py remain a local compatibility option only for a host confirmed to support interactive HTML. Follow its visualization rules, use stable case identity, safely escape JSON and text, require active submission, and do not equate saved state with submission. A local form is not the browser MCP App. If no clickable channel is available, explain the limitation and accept text choices.
+The existing remote `open_preferences` / `evaluate_selection` service remains an optional alternative when its tools and registered UI are already available. If it returns a rendered form, do not duplicate it. Remote connection absence, 401 responses or timeouts must never cause a switch to asking for typed preferences: use the mandatory local inline form automatically.
 
+If the inline renderer itself is genuinely unavailable, report the specific rendering limitation and preserve the case. Do not silently fall back to a plain-text questionnaire. Accept textual preferences only when the user explicitly requests text interaction or has already supplied the required choices. Never claim buttons are visible without emitting a rendering reference or obtaining an actual rendered MCP App result.
 
 ## Submission and scope
 
