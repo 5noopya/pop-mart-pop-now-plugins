@@ -17,7 +17,7 @@ A screenshot alone starts the complete workflow: read the probability skill, ver
 
 An explicit probabilities-only request skips this skill. An explicit preferences-only request uses verified complete styles and purchasable IDs without calculating probabilities; submission records choices only. Ordinary wanted-style or quantity statements do not restrict the default workflow. Supplemental screenshots retain the current scope; new independent cases restore default scope.
 
-An incomplete style list requires a matching same-series complete style-name screenshot before generating options. Merge the supplement into the current case. Preferences-only mode does not require all exclusions, but must verify the actual purchasable-box count. Ask only for missing relevant data.
+Use the picker's general count rule for any set size N: N displayed boxes and N distinct readable style names means a complete list, without a confirmation question. Only an actually incomplete style list requires a matching same-series complete style-name screenshot before generating options. Merge the supplement into the current case. Preferences-only mode does not require all exclusions, but must verify the actual purchasable-box count. Ask only for missing relevant data.
 
 ## Three genuine choice groups
 

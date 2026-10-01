@@ -6,6 +6,6 @@ Use POP NOW on the official POP MART website to open blind boxes online. For eve
 
 ## 安装 / Installation
 
-从 [最新 Release](https://github.com/5noopya/pop-mart-pop-now-plugins/releases/latest) 下载 `pop-mart-pop-now-chat-0.2.13.zip`。在提供该入口的客户端打开 **Plugins → Add → Upload plugin archive** 上传完整 ZIP，并按提示安装/启用。Codex 桌面端也可通过 **Add marketplace** 添加本仓库后选择此版本安装。
+从 [最新 Release](https://github.com/5noopya/pop-mart-pop-now-plugins/releases/latest) 下载 `pop-mart-pop-now-chat-0.2.14.zip`。在提供该入口的客户端打开 **Plugins → Add → Upload plugin archive** 上传完整 ZIP，并按提示安装/启用。Codex 桌面端也可通过 **Add marketplace** 添加本仓库后选择此版本安装。
 
-Download `pop-mart-pop-now-chat-0.2.13.zip` from the [latest release](https://github.com/5noopya/pop-mart-pop-now-plugins/releases/latest). In clients exposing this option, use **Plugins → Add → Upload plugin archive**, upload the complete ZIP, and follow the installation/enablement prompts. In Codex desktop, you can also add this repository with **Add marketplace** and install this variant.
+Download `pop-mart-pop-now-chat-0.2.14.zip` from the [latest release](https://github.com/5noopya/pop-mart-pop-now-plugins/releases/latest). In clients exposing this option, use **Plugins → Add → Upload plugin archive**, upload the complete ZIP, and follow the installation/enablement prompts. In Codex desktop, you can also add this repository with **Add marketplace** and install this variant.
