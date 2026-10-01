@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "blind-box-buttons": {
-      "type": "streamable-http",
-      "url": "https://blind-box-picker-5noopya.icy-swan-9305.chatgpt.site/mcp",
-      "headers": {}
-    }
-  }
-}

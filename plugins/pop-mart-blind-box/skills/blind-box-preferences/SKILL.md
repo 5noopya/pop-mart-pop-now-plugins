@@ -29,7 +29,7 @@ Disable a wanted style in the unwanted group and vice versa. Unmentioned styles 
 
 ## Mandatory Codex inline buttons
 
-The default Codex workflow must show real clickable choices immediately after the probability matrix in the same final response. The screenshot itself authorizes rendering the form. Do not ask whether the user wants buttons, stop after probabilities, or replace the choices with a text-input question. Do not depend on remote MCP authorization to display the choices.
+The default Codex workflow must show real clickable choices immediately after the probability matrix in the same final response. The screenshot itself authorizes rendering the form. Do not ask whether the user wants buttons, stop after probabilities, or replace the choices with a text-input question. Use the bundled local form; no remote service or App connection is required.
 
 1. Read the available visualize skill and follow its inline HTML rendering contract. Codex supports that conversation surface when the visualize skill is present; do not ask the user to confirm support.
 2. Save the verified current case JSON with complete `items`, original `boxes`/clues, actual `available_box_ids`, and only explicitly stated preference prefill.
@@ -47,11 +47,11 @@ The bundled form has single-select quantity buttons from 1 through the purchasab
 
 On active submission, validate case identity, actual style names, conflicts, quantity and scope, then use the bundled exact solver to optimize or rank risk. Do not ask the user to type the same choices, seek another calculation confirmation, or reopen the form after completion. A demo is not a real case.
 
-## Remote connection and rendering failures
+## Local rendering failures
 
-The existing remote `open_preferences` / `evaluate_selection` service remains an optional alternative when its tools and registered UI are already available. If it returns a rendered form, do not duplicate it. Remote connection absence, 401 responses or timeouts must never cause a switch to asking for typed preferences: use the mandatory local inline form automatically.
+This plugin has no remote tools or App dependencies. Generate the bundled inline form directly; do not look for open_preferences or evaluate_selection, ask the user to connect a service, or request the developer's account access.
 
-If the inline renderer itself is genuinely unavailable, report the specific rendering limitation and preserve the case. Do not silently fall back to a plain-text questionnaire. Accept textual preferences only when the user explicitly requests text interaction or has already supplied the required choices. Never claim buttons are visible without emitting a rendering reference or obtaining an actual rendered MCP App result.
+If the inline renderer itself is genuinely unavailable, report the specific rendering limitation and preserve the case. Do not silently fall back to a plain-text questionnaire. Accept textual preferences only when the user explicitly requests text interaction or has already supplied the required choices. Never claim buttons are visible without emitting the actual rendering reference. Updating this plugin does not prove another user's client supports the required renderer and submission bridge.
 
 ## Submission and scope
 

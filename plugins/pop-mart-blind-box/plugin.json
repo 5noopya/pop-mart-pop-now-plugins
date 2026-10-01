@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pop-mart-blind-box",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "截图算概率，给出最佳盲盒选择",
   "author": {
     "name": "5noopya"
