@@ -7,7 +7,7 @@ Calculate box probabilities from screenshots and find the best blind-box selecti
 | 版本 / Variant | 当前版本 / Version | 使用方式 / Interaction |
 | --- | --- | --- |
 | Chat版 / Chat | 0.2.14 | 无 MCP 依赖；通过对话收集偏好 / No MCP dependency; conversational preferences |
-| Codex版 / Codex | 0.3.7 | 本地精确计算与内嵌按钮，无 MCP/App 依赖 / Local exact solver and inline buttons; no MCP/App dependency |
+| Codex版 / Codex | 0.3.8 | 本地精确计算与内嵌按钮，无 MCP/App 依赖 / Local exact solver and inline buttons; no MCP/App dependency |
 
 ## 使用说明 / How to use
 
@@ -36,7 +36,7 @@ Results default to Chinese with a short inline notice. Reply English to switch s
    ```text
    https://github.com/5noopya/pop-mart-pop-now-plugins
    ```
-3. 确认添加，在该来源下选择 **泡泡玛特盲盒概率计算**（Codex版）或 **泡泡玛特盲盒概率计算（Chat版）**，点击安装。
+3. 确认添加，在该来源下选择 **泡泡玛特盲盒概率计算（Codex版）**或 **泡泡玛特盲盒概率计算（Chat版）**，点击安装。
 4. 按提示完成需要的连接授权，开启新对话，选用已安装插件并上传截图。
 
 Open **Plugins → Add marketplace** in Codex desktop, enter the repository URL above, add the source, and install the variant you want. Start a new chat with the plugin and upload your screenshot. No terminal commands are needed. Menu labels and availability can vary by client version.
@@ -46,7 +46,7 @@ Open **Plugins → Add marketplace** in Codex desktop, enter the repository URL 
 在 [最新 Release](https://github.com/5noopya/pop-mart-pop-now-plugins/releases/latest) 的 **Assets** 中下载以下完整安装文件：
 
 - **Chat版**：`pop-mart-pop-now-chat-0.2.14.zip`
-- **Codex版**：`pop-mart-pop-now-codex-0.3.7.zip`
+- **Codex版**：`pop-mart-pop-now-codex-0.3.8.zip`
 
 在提供此入口的网页版或桌面客户端打开 **Plugins → Add → Upload plugin archive**，上传对应 ZIP，再按页面提示安装/启用。网页版建议选择 Chat版。上传的是每位用户自己的插件副本；客户端是否支持运行其中的脚本或表单仍取决于宿主环境。不要使用 GitHub 自动生成的 **Source code (zip)** 作为单个插件归档，它包含整个仓库和两个插件。
 
